@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Shared component fragments — not pages
+Disallow: /SiteNav.dc.html
+Disallow: /SiteFooter.dc.html
+Disallow: /TownPage.dc.html
+Disallow: /OrientNav.dc.html
+
+Sitemap: https://webmi.org/sitemap.xml

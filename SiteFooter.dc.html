@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin="anonymous">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="anonymous">
+<link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0b0b0d; }
+a { color: #c9ccd2; text-decoration: none; }
+a:hover { color: #ffffff; }
+</style>
+</helmet>
+<footer style="position: relative; z-index: 2; font-family: Switzer, -apple-system, sans-serif; color: #f4f4f5; border-top: 1px solid rgb(255 255 255 / 0.08); padding: clamp(48px, 7vw, 96px) 6vw 40px; background: linear-gradient(rgb(5 6 10 / 0) , rgb(5 6 10 / 0.55));">
+  <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: minmax(min(260px, 100%), 1.6fr) 1fr 1fr; gap: 48px 64px;">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: flex; align-items: baseline; gap: 8px; font-family: Gambarino, Georgia, serif; font-size: 19px;">
+          <svg width="15" height="15" viewBox="0 0 100 100" style="align-self: center;"><polygon points="50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40" fill="#f4f4f5"></polygon></svg>
+          <span>Web Michigan</span>
+        </div>
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #9a9da3; max-width: 34ch;">Web design for small businesses in Boyne City and across Northern Michigan. Made simple, made local.</p>
+        <p style="margin: 0; font-size: 13px; line-height: 1.8; color: #7d8087;">WebMichigan · Boyne City, MI<br><br><a href="tel:7344760843" style="color: rgb(154, 157, 163);">(734) 476-0843</a> · <a href="mailto:landon@webmi.org" style="color: rgb(154, 157, 163);">landon@webmi.org</a></p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Navigate</span>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px;">
+          <a href="/">Home</a>
+          <a href="/services">Services &amp; Pricing</a>
+          <a href="/web-design">Design &amp; Care</a>
+          <a href="/free-demo">Free Demo</a>
+          <a href="/our-work">Our Work</a>
+          <a href="/about">About</a>
+          <a href="/faq">FAQ</a>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Contact</span>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px;">
+          <a href="mailto:landon@webmi.org">landon@webmi.org</a>
+          <a href="tel:7344760843">(734) 476-0843</a>
+          <a href="/contact">Get in touch</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1200px; margin: 44px auto 0; padding-top: 22px; border-top: 1px solid rgb(255 255 255 / 0.07); display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 22px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Areas served</span>
+      <a href="/web-design-boyne-city" style="font-size: 14px;">Boyne City</a>
+    </div>
+  </sc-if>
+  <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 16px; padding-bottom: 26px;">
+      <div style="display: flex; align-items: baseline; gap: 8px; font-family: Gambarino, Georgia, serif; font-size: 19px;">
+        <svg width="15" height="15" viewBox="0 0 100 100" style="align-self: center;"><polygon points="50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40" fill="#f4f4f5"></polygon></svg>
+        <span>Web Michigan</span>
+      </div>
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #9a9da3; max-width: 34ch;">Web design for small businesses in Boyne City and across Northern Michigan. Made simple, made local.</p>
+    </div>
+    <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="3">
+      <div style="border-top: 1px solid rgb(255 255 255 / 0.09);">
+        <button onClick="{{ sec.toggle }}" aria-expanded="{{ sec.openAttr }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 17px 0; background: transparent; border: none; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #9a9da3;">
+          <span>{{ sec.label }}</span>
+          <span style="font-family: Switzer, sans-serif; font-size: 18px; font-weight: 300; color: #5d6066; transform: rotate({{ sec.rot }}); transition: transform 0.3s ease;">+</span>
+        </button>
+        <div style="display: grid; grid-template-rows: {{ sec.rows }}; transition: grid-template-rows 0.35s ease;">
+          <div style="overflow: hidden;">
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 4px 0 22px; font-size: 15px;">
+              <sc-for list="{{ sec.links }}" as="lnk" hint-placeholder-count="4">
+                <a href="{{ lnk.href }}" style="padding: 2px 0;">{{ lnk.label }}</a>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+    <div style="border-top: 1px solid rgb(255 255 255 / 0.09); padding-top: 20px; font-size: 13px; line-height: 1.8; color: #7d8087;">WebMichigan · Boyne City, MI<br><a href="tel:7344760843" style="color: #9a9da3;">(734) 476-0843</a> · <a href="mailto:landon@webmi.org" style="color: #9a9da3;">landon@webmi.org</a></div>
+  </sc-if>
+  <div style="max-width: 1200px; margin: 26px auto 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: #5d6066;">
+    <span>© 2026 WebMI</span>
+    <span>Made in Boyne City, Michigan</span>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1280, &quot;height&quot;: 560}}">
+
+class Component extends DCLogic {
+  state = { narrow: false, open: {} };
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 720px)');
+    this.onMq = () => this.setState({ narrow: this.mq.matches });
+    this.mq.addEventListener('change', this.onMq);
+    if (this.mq.matches) this.setState({ narrow: true });
+  }
+  componentWillUnmount() { if (this.mq) this.mq.removeEventListener('change', this.onMq); }
+  renderVals() {
+    const defs = [
+      ['Navigate', [
+        ['/', 'Home'], ['/services', 'Services & Pricing'], ['/web-design', 'Design & Care'],
+        ['/free-demo', 'Free Demo'], ['/our-work', 'Our Work'], ['/about', 'About'], ['/faq', 'FAQ'],
+      ]],
+      ['Contact', [
+        ['mailto:landon@webmi.org', 'landon@webmi.org'], ['tel:7344760843', '(734) 476-0843'], ['/contact', 'Get in touch'],
+      ]],
+      ['Areas served', [
+        ['/web-design-boyne-city', 'Boyne City'],
+      ]],
+    ];
+    const open = this.state.open;
+    return {
+      narrow: this.state.narrow,
+      wide: !this.state.narrow,
+      sections: defs.map(([label, links], i) => ({
+        label,
+        links: links.map(([href, label2]) => ({ href, label: label2 })),
+        openAttr: open[i] ? 'true' : 'false',
+        rows: open[i] ? '1fr' : '0fr',
+        rot: open[i] ? '45deg' : '0deg',
+        toggle: () => this.setState(s => ({ open: { ...s.open, [i]: !s.open[i] } })),
+      })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

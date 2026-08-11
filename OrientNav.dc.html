@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0b0b0d; }
+a { color: #c9ccd2; text-decoration: none; }
+a:hover { color: #ffffff; }
+</style>
+</helmet>
+<nav aria-label="How the services fit together" style="font-family: Switzer, -apple-system, sans-serif; font-weight: 300; border-top: 1px solid rgb(255 255 255 / 0.1); border-bottom: 1px solid rgb(255 255 255 / 0.1); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 0 40px; padding: 26px 0;">
+  <a href="/web-design" style="display: flex; flex-direction: column; gap: 6px; padding: 8px 0;">
+    <span style="font-size: 18px; color: {{ c.build }};">Design &amp; Care</span>
+    <span style="font-size: 13px; line-height: 1.5; color: #7d8087;">From $199 a month. Design, hosting and support, no upfront fee.</span>
+  </a>
+  <a href="/local-seo" style="display: flex; flex-direction: column; gap: 6px; padding: 8px 0;">
+    <span style="font-size: 18px; color: {{ c.seo }};">Local SEO</span>
+    <span style="font-size: 13px; line-height: 1.5; color: #7d8087;">Runs inside both plans. How people find you on Google and Maps.</span>
+  </a>
+  <a href="/free-demo" style="display: flex; flex-direction: column; gap: 6px; padding: 8px 0;">
+    <span style="font-size: 18px; color: {{ c.demo }};">Free Demo</span>
+    <span style="font-size: 13px; line-height: 1.5; color: #7d8087;">A working site for your business before anything starts.</span>
+  </a>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1100, &quot;height&quot;: 140}, &quot;here&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;build&quot;, &quot;options&quot;: [&quot;build&quot;, &quot;seo&quot;, &quot;demo&quot;], &quot;tsType&quot;: &quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const here = { care: 'build', support: 'build' }[this.props.here] ?? this.props.here ?? 'build';
+    const c = { build: '#9a9da3', seo: '#9a9da3', demo: '#9a9da3' };
+    if (c[here] !== undefined) c[here] = '#4a9eeb';
+    return { c };
+  }
+}
+</script>
+</body>
+</html>

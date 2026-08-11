@@ -1,0 +1,40 @@
+# --- Squarespace paths that changed ---
+/services/web-design      /web-design    301
+/services/local-seo       /local-seo     301
+/services/monthly-care    /web-design    301
+/services/support         /web-design    301
+/services/pricing         /services      301
+
+# --- .html -> clean URL ---
+/index.html               /              301
+/services.html            /services      301
+/web-design.html          /web-design    301
+/local-seo.html           /local-seo     301
+/free-demo.html           /free-demo     301
+/our-work.html            /our-work      301
+/about.html               /about         301
+/faq.html                 /faq           301
+/contact.html             /contact       301
+/web-design-boyne-city.html  /web-design-boyne-city  301
+
+# --- town pages not yet written ---
+# These six ship once their local copy exists. Until then send the traffic
+# to the main service page rather than serving a 404.
+/web-design-charlevoix     /web-design    302
+/web-design-petoskey       /web-design    302
+/web-design-harbor-springs /web-design    302
+/web-design-east-jordan    /web-design    302
+/web-design-boyne-falls    /web-design    302
+/web-design-walloon-lake   /web-design    302
+
+# --- legacy Squarespace system paths ---
+/config/*                 /              301
+/home                     /              301
+/about-us                 /about         301
+/contact-us               /contact       301
+/portfolio                /our-work      301
+/work                     /our-work      301
+/pricing                  /services      301
+
+# TODO before launch: open Squarespace > Pages and Search Console > Pages,
+# and add a 301 line here for every old URL not already listed above.

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin="anonymous">
+<link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="anonymous">
+<link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #0b0b0d; }
+a { color: #c9ccd2; text-decoration: none; }
+a:hover { color: #ffffff; }
+</style>
+</helmet>
+<header class="js-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 900; display: flex; align-items: center; justify-content: center; padding: 18px 32px; box-sizing: border-box; background: linear-gradient(rgb(5 6 10 / 0.72), rgb(5 6 10 / 0)); font-family: Switzer, -apple-system, 'Helvetica Neue', sans-serif;">
+  <a href="/" data-magnet style="display: inline-flex; align-items: baseline; font-family: Gambarino, 'Iowan Old Style', Georgia, serif; font-size: 22px; color: #f4f4f5; letter-spacing: 0.01em;">
+    <span>Web</span>
+    <span style="display: inline-flex; transform: translateY(-11px); margin: 0 -1px;"><svg class="js-star" width="17" height="17" viewBox="0 0 100 100" style="display: block; overflow: visible; background: transparent; filter: drop-shadow(0 0 10px rgb(255 255 255 / 0.9)) brightness(2.1); will-change: filter; transform: translateZ(0); backface-visibility: hidden;"><polygon points="50,0 60,40 100,50 60,60 50,100 40,60 0,50 40,40" fill="#f4f4f5"></polygon></svg></span>
+    <span>Michigan</span>
+  </a>
+  <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggle }}" aria-label="Menu" style="position: absolute; right: 20px; top: 12px; display: flex; flex-direction: column; gap: 6px; background: transparent; border: none; cursor: pointer; padding: 10px;">
+      <span style="display: block; width: 24px; height: 1.5px; background: #f4f4f5;"></span>
+      <span style="display: block; width: 24px; height: 1.5px; background: #f4f4f5;"></span>
+    </button>
+  </sc-if>
+</header>
+<sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+  <nav class="js-nav" aria-label="Site" style="position: fixed; right: 24px; bottom: 24px; z-index: 900; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; font-family: Switzer, -apple-system, 'Helvetica Neue', sans-serif; font-size: 14px; letter-spacing: 0.04em; white-space: nowrap;">
+    <a href="/" data-magnet data-spot style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid {{ b.home }}; background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); transition: border-color 0.25s ease, color 0.25s ease;" style-hover="border-color: #ffffff; color: #ffffff;">Home</a>
+    <div style="position: relative; display: inline-flex;" onMouseEnter="{{ subEnter }}" onMouseLeave="{{ subLeave }}">
+      <a href="/services" data-magnet data-spot style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid {{ b.services }}; background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); transition: border-color 0.25s ease, color 0.25s ease;" style-hover="border-color: #ffffff; color: #ffffff;">Services</a>
+      <div style="position: absolute; right: 100%; bottom: 0; display: flex; flex-direction: row; align-items: center; gap: 8px; padding-right: 12px; pointer-events: {{ subPE }};">
+        <a href="/web-design" data-magnet data-spot style="display: inline-flex; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid rgb(255 255 255 / 0.3); background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); white-space: nowrap; opacity: {{ subO }}; transform: translateX({{ subX }}); transition: border-color 0.25s ease, opacity 0.28s ease 0.1s, transform 0.38s cubic-bezier(0.6,0,0.2,1) 0.1s;" style-hover="border-color: #ffffff; color: #ffffff;">Design &amp; Care</a>
+        <a href="/free-demo" data-magnet data-spot style="display: inline-flex; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid rgb(255 255 255 / 0.3); background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); white-space: nowrap; opacity: {{ subO }}; transform: translateX({{ subX }}); transition: border-color 0.25s ease, opacity 0.28s ease, transform 0.38s cubic-bezier(0.6,0,0.2,1);" style-hover="border-color: #ffffff; color: #ffffff;">Free Demo</a>
+      </div>
+    </div>
+    <a href="/our-work" data-magnet data-spot style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid {{ b.work }}; background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); transition: border-color 0.25s ease, color 0.25s ease;" style-hover="border-color: #ffffff; color: #ffffff;">Our Work</a>
+    <a href="/about" data-magnet data-spot style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid {{ b.about }}; background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); transition: border-color 0.25s ease, color 0.25s ease;" style-hover="border-color: #ffffff; color: #ffffff;">About</a>
+    <a href="/faq" data-magnet data-spot style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 999px; color: #f4f4f5; border: 1px solid {{ b.faq }}; background: radial-gradient(110px circle at var(--sx, 50%) var(--sy, 50%), rgb(214 218 226 / var(--so, 0)), transparent 70%); transition: border-color 0.25s ease, color 0.25s ease;" style-hover="border-color: #ffffff; color: #ffffff;">FAQ</a>
+    <a href="/contact" data-magnet style="display: inline-flex; align-items: center; padding: 10px 22px; border-radius: 999px; color: #f4f4f5; border: 1px solid rgb(74 158 235 / 0.7); transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;" style-hover="background: #4a9eeb; border-color: #4a9eeb; color: #06070a;">Contact</a>
+  </nav>
+</sc-if>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+  <div style="position: fixed; inset: 0; z-index: 950; background: rgb(5 6 10 / 0.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); display: flex; flex-direction: column; justify-content: space-between; padding: 24px 28px 40px;">
+    <div style="display: flex; justify-content: flex-end;">
+      <button onClick="{{ toggle }}" aria-label="Close" style="background: transparent; border: none; cursor: pointer; color: #f4f4f5; font-size: 32px; font-family: Switzer, sans-serif; font-weight: 300; padding: 8px;">&#215;</button>
+    </div>
+    <nav style="display: flex; flex-direction: column; gap: 14px; font-family: Gambarino, Georgia, serif; font-size: clamp(30px, 7vw, 42px);">
+      <a href="/" style="color: #f4f4f5;">Home</a>
+      <a href="/services" style="color: #f4f4f5;">Services</a>
+      <div style="display: flex; flex-direction: column; gap: 6px; padding: 0 0 4px 22px; font-size: clamp(20px, 4.6vw, 26px);">
+        <a href="/web-design" style="color: #9a9da3;">Design &amp; Care</a>
+        <a href="/free-demo" style="color: #9a9da3;">Free Demo</a>
+      </div>
+      <a href="/our-work" style="color: #f4f4f5;">Our Work</a>
+      <a href="/about" style="color: #f4f4f5;">About</a>
+      <a href="/faq" style="color: #f4f4f5;">FAQ</a>
+      <a href="/contact" style="color: #4a9eeb;">Contact</a>
+    </nav>
+    <div style="display: flex; flex-direction: column; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px;">
+      <a href="mailto:landon@webmi.org" style="color: #9a9da3;">landon@webmi.org</a>
+      <a href="tel:7344760843" style="color: #9a9da3;">(734) 476-0843</a>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1280, &quot;height&quot;: 480}, &quot;active&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;home&quot;, &quot;options&quot;: [&quot;home&quot;, &quot;services&quot;, &quot;webdesign&quot;, &quot;monthlycare&quot;, &quot;demo&quot;, &quot;about&quot;, &quot;faq&quot;, &quot;contact&quot;, &quot;none&quot;], &quot;tsType&quot;: &quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { narrow: false, open: false, sub: false };
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 980px)');
+    this.onMq = () => this.setState({ narrow: this.mq.matches, open: false });
+    this.mq.addEventListener('change', this.onMq);
+    if (this.mq.matches) this.setState({ narrow: true });
+  }
+  componentWillUnmount() {
+    if (this.mq) this.mq.removeEventListener('change', this.onMq);
+    clearTimeout(this.subT);
+  }
+  renderVals() {
+    const active = this.props.active ?? '';
+    const servicesGroup = ['services', 'webdesign', 'monthlycare', 'demo'];
+    const b = {};
+    ['home', 'about', 'faq', 'work'].forEach(k => { b[k] = k === active ? 'rgb(255 255 255 / 0.85)' : 'rgb(255 255 255 / 0.3)'; });
+    b.services = servicesGroup.includes(active) ? 'rgb(255 255 255 / 0.85)' : 'rgb(255 255 255 / 0.3)';
+    const sub = this.state.sub;
+    return {
+      narrow: this.state.narrow,
+      wide: !this.state.narrow,
+      open: this.state.open && this.state.narrow,
+      b,
+      subO: sub ? 1 : 0,
+      subX: sub ? '0px' : '16px',
+      subPE: sub ? 'auto' : 'none',
+      subEnter: () => { clearTimeout(this.subT); this.setState({ sub: true }); },
+      subLeave: () => { clearTimeout(this.subT); this.subT = setTimeout(() => this.setState({ sub: false }), 160); },
+      toggle: () => this.setState(s => ({ open: !s.open })),
+    };
+  }
+}
+</script>
+</body>
+</html>
