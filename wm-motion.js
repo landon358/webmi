@@ -7,47 +7,43 @@
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FINE = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
 
-  /* ---- liquid glass: true animated refraction where supported ----
-     A displacement filter warps the live starfield behind each tile;
-     the displacement strength breathes slowly, so the glass reads as
-     liquid rather than frost. Fallback stays plain blur. */
-  /* Set once the FPS governor reports trouble. The displacement filter runs as a
-     backdrop-filter over the live starfield canvas, so the browser re-filters the
-     whole backdrop behind every tile on every frame — by far the most expensive
-     thing on the page. On a struggling device it goes first, and stays off:
-     liquidize() polls for ~9s, so this has to be sticky, not just a class swap. */
-  var lqOff = false;
-  window.addEventListener('wm:perf', function () {
-    if (lqOff) return;
-    lqOff = true;
-    document.querySelectorAll('.js-glass').forEach(function (el) {
-      el.style.backdropFilter = 'blur(8px) saturate(1.65)';
-      el.style.webkitBackdropFilter = 'blur(8px) saturate(1.65)';
-    });
-    var def = document.getElementById('wm-liquid-def');
-    if (def && def.parentNode) def.parentNode.removeChild(def);
-  });
+  /* ---- glass tiles ----
+     These used to get an animated SVG displacement filter (feTurbulence ->
+     feDisplacementMap) applied as a backdrop-filter. That is the most expensive
+     thing a page can ask a compositor for: the backdrop is the full-screen
+     starfield canvas, which repaints every frame, so the browser regenerated
+     fractal noise and re-warped the backdrop behind all eight tiles on every
+     single frame, and the SMIL-animated `scale` meant no result could ever be
+     cached. The page ran that way from first paint, and the FPS governor could
+     not intervene for ~6s, which is exactly how long the page felt broken.
 
-  function liquidize() {
-    if (!document.body || lqOff) return;
-    if (!document.getElementById('wm-liquid-def')) {
-      var w = document.createElement('div');
-      w.innerHTML = '<svg id="wm-liquid-def" width="0" height="0" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">'
-        + '<filter id="wm-liquid" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">'
-        + '<feTurbulence type="fractalNoise" baseFrequency="0.007 0.013" numOctaves="2" seed="4" result="n"/>'
-        + '<feGaussianBlur in="n" stdDeviation="2.6" result="sn"/>'
-        + '<feDisplacementMap in="SourceGraphic" in2="sn" xChannelSelector="R" yChannelSelector="G" scale="18">'
-        + (reduced ? '' : '<animate attributeName="scale" values="12;30;12" dur="8s" repeatCount="indefinite"/>')
-        + '</feDisplacementMap></filter></svg>';
-      document.body.appendChild(w.firstElementChild);
-    }
-    if (window.CSS && CSS.supports && CSS.supports('backdrop-filter', 'url(#wm-liquid)')) {
-      document.querySelectorAll('.js-glass:not([data-wm-lq])').forEach(function (el) {
-        el.setAttribute('data-wm-lq', '1');
-        el.style.backdropFilter = 'url(#wm-liquid) blur(2.5px) saturate(1.7) brightness(1.05)';
-      });
-    }
-  }
+     Side-by-side capture over this near-black starfield showed the displacement
+     was imperceptible against the plain blur the tiles already carry inline, so
+     it buys nothing. The markup keeps `backdrop-filter: blur(8px) saturate(1.65)`
+     and we no longer override it. To bring the effect back, restore the filter
+     def and set it here — but gate it behind a measured frame rate, never apply
+     it optimistically at load. */
+
+  /* Weak devices still need an escape hatch from plain blur, which is not free
+     over an animated canvas either. starfield.js broadcasts wm:perf as its
+     governor steps down; tier 2 means blur is still too costly, so drop the
+     backdrop-filter entirely and fall back to an opaque panel. */
+  var glassTier = 0;
+  window.addEventListener('wm:perf', function (e) {
+    var tier = (e && e.detail && e.detail.tier) || 0;
+    if (tier <= glassTier) return;
+    glassTier = tier;
+    document.querySelectorAll('.js-glass').forEach(function (el) {
+      if (tier >= 2) {
+        el.style.backdropFilter = 'none';
+        el.style.webkitBackdropFilter = 'none';
+        el.style.background = 'rgb(18 20 28 / 0.92)';
+      } else {
+        el.style.backdropFilter = 'blur(4px)';
+        el.style.webkitBackdropFilter = 'blur(4px)';
+      }
+    });
+  });
 
   /* ---- logo star glimmer: mostly lit, fast random dips ---- */
   var starOn = false;
@@ -79,7 +75,6 @@
   /* ---- entrances + scroll reveals (polls while the page streams in) ---- */
   var t0 = Date.now(), n = 0;
   var iv = setInterval(function () {
-    liquidize();
     starGlimmer();
     if (Date.now() - t0 > 9000) { clearInterval(iv); return; }
     if (!window.gsap || !window.ScrollTrigger) return;

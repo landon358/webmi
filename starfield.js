@@ -46,7 +46,7 @@
   var sky = null, stars = [], bright = [], hazes = [], shots = [];
   var nextShot = 4, tPrev = 0, running = true, rafId = 0, scrollCur = 0;
   var DENS = window.WM_STAR_DENSITY || 3, mw = null, mwL = 0, mwW = 0; // DENS: star density multiplier
-  var tier = 0, baseDens = DENS, gvN = 0, gvT = 0, gvWait = 4; // FPS governor: steps quality down on weak devices
+  var tier = 0, baseDens = DENS, gvN = 0, gvT = 0, gvWait = 1; // FPS governor: steps quality down on weak devices
   var panOX = 0, panOY = 0, panVX = 0, panVY = 0, panTX = 0, panTY = 0; // camera pan (page-travel transitions)
   var galImgs = [], galImgsC = [], galaxies = [], colorStars = [], tint = null, colEls = null, cf = 0, colWait = 0;
   var isHome = /home[^\/]*$/i.test(location.pathname);
@@ -451,19 +451,23 @@
     govern(dt);
   }
 
-  // Measure fps in 2s windows; below 45 -> halve density + drop DPR, then cut haze/colour layers.
+  // Measure fps in 1s windows; below 45 -> halve density + drop DPR, then cut haze/colour layers.
+  // The warm-up and window used to total ~6s before the first downgrade could land,
+  // which is long enough that a struggling device feels broken before help arrives.
+  // Skipping the first second of frames still avoids judging the page on its own
+  // start-up cost, but relief now comes at ~2s instead of ~6s.
   function govern(dt) {
     if (tier >= 2 || intro || document.hidden) return;
     if (gvWait > 0) { gvWait -= dt; return; }
     gvN++; gvT += dt;
-    if (gvT < 2) return;
+    if (gvT < 1) return;
     var fps = gvN / gvT; gvN = 0; gvT = 0;
     if (fps < 45) {
       tier++;
       DPR = 1;
       DENS = baseDens * (tier === 1 ? 0.5 : 0.2);
       size();
-      gvWait = 2;
+      gvWait = 1;
       // The starfield is not the only expensive layer on the page. Broadcast the
       // downgrade so the glass tiles can drop their filter too, otherwise the
       // governor keeps shedding stars while the real cost stays untouched.
