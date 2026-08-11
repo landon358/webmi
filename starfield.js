@@ -21,7 +21,7 @@
   if (window.__wmStarfieldInit) return; window.__wmStarfieldInit = true;
   if (!document.body) { window.__wmStarfieldInit = false; return document.addEventListener('DOMContentLoaded', init); }
   var st = document.createElement('style');
-  st.textContent = "\n.wm-grain{position:fixed;inset:-40px;z-index:1;pointer-events:none;opacity:0.032;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\");will-change:transform;animation:wm-grain-shift 7s steps(6) infinite;}\n@keyframes wm-grain-shift{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-12px,8px,0)}40%{transform:translate3d(9px,-13px,0)}60%{transform:translate3d(-8px,-9px,0)}80%{transform:translate3d(13px,5px,0)}100%{transform:translate3d(0,0,0)}}\n@media (prefers-reduced-motion: reduce){.wm-grain{animation:none}}\nhtml{scrollbar-gutter:stable}\nbody{background:#0b0b0d;overflow-x:hidden;margin:0}\n";
+  st.textContent = "\n.wm-grain{position:fixed;inset:-40px;z-index:1;pointer-events:none;opacity:0.032;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\");will-change:transform;animation:wm-grain-shift 7s steps(6) infinite;}\n@keyframes wm-grain-shift{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-12px,8px,0)}40%{transform:translate3d(9px,-13px,0)}60%{transform:translate3d(-8px,-9px,0)}80%{transform:translate3d(13px,5px,0)}100%{transform:translate3d(0,0,0)}}\n@media (prefers-reduced-motion: reduce){.wm-grain{animation:none}}\nhtml{scrollbar-gutter:stable;background:#0b0b0d}\nbody{overflow-x:hidden;margin:0}\n";
   document.head.appendChild(st);
   var bg = document.createElement('div');
   bg.id = 'webmi-bg';
@@ -48,7 +48,7 @@
   var DENS = window.WM_STAR_DENSITY || 3, mw = null, mwL = 0, mwW = 0; // DENS: star density multiplier
   var tier = 0, baseDens = DENS, gvN = 0, gvT = 0, gvWait = 4; // FPS governor: steps quality down on weak devices
   var panOX = 0, panOY = 0, panVX = 0, panVY = 0, panTX = 0, panTY = 0; // camera pan (page-travel transitions)
-  var galImgs = [], galImgsC = [], galaxies = [], colorStars = [], tint = null, colEls = null, cf = 0;
+  var galImgs = [], galImgsC = [], galaxies = [], colorStars = [], tint = null, colEls = null, cf = 0, colWait = 0;
   var isHome = /home[^\/]*$/i.test(location.pathname);
   var INTRO_D = 5.5, THETA = 1.5, introT = 0, intro = isHome; // star-trail spin-in, home only
   try {
@@ -295,19 +295,34 @@
     ctx.globalAlpha = fadeK;
     ctx.drawImage(sky, 0, 0);
     ctx.globalAlpha = 1;
+    // The colour zone is measured from two markers in the page body. The body is
+    // rendered client-side and the webfonts swap in late, so on a slow connection
+    // both the markers and their final positions arrive well after the first frame.
+    // Keep looking rather than latching a "not found" result, and throttle the
+    // lookup so pages that legitimately have no colour zone stay cheap.
     if (!colEls) {
-      var e0 = document.querySelector('[data-sky-color-start]');
-      var e1 = document.querySelector('[data-sky-color-end]');
-      if (e0 && e1) colEls = [e0, e1];
-      else if (document.readyState === 'complete') colEls = [];
+      if (colWait > 0) colWait--;
+      else {
+        var e0 = document.querySelector('[data-sky-color-start]');
+        var e1 = document.querySelector('[data-sky-color-end]');
+        if (e0 && e1) colEls = [e0, e1];
+        else colWait = 30;
+      }
     }
     cf = 0;
-    if (colEls && colEls.length === 2) {
+    if (colEls) {
       var sy = window.pageYOffset || document.documentElement.scrollTop || 0;
       var rA = colEls[0].getBoundingClientRect(), rB = colEls[1].getBoundingClientRect();
       var s0 = rA.top + sy, s1 = rB.top + rB.height * 0.6 + sy;
-      cf = Math.max(0, Math.min(1, (sy + H * 0.75 - s0) / Math.max(1, s1 - s0)));
-      cf = cf * cf * (1.8 - 0.8 * cf);
+      var span = s1 - s0;
+      // Until layout settles, that span collapses and the ratio below saturates,
+      // which paints the full colour tint at the top of the page. A zone shorter
+      // than half a viewport means the page has not finished laying out yet, so
+      // stay colourless for this frame instead of guessing.
+      if (span > H * 0.5) {
+        cf = Math.max(0, Math.min(1, (sy + H * 0.75 - s0) / span));
+        cf = cf * cf * (1.8 - 0.8 * cf);
+      }
     }
     if (cf > 0.01 && tint) { ctx.globalAlpha = Math.min(1, cf * 1.15); ctx.drawImage(tint, 0, 0); }
     ctx.globalAlpha = ip * fadeK;
@@ -449,6 +464,10 @@
       DENS = baseDens * (tier === 1 ? 0.5 : 0.2);
       size();
       gvWait = 2;
+      // The starfield is not the only expensive layer on the page. Broadcast the
+      // downgrade so the glass tiles can drop their filter too, otherwise the
+      // governor keeps shedding stars while the real cost stays untouched.
+      try { window.dispatchEvent(new CustomEvent('wm:perf', { detail: { tier: tier, fps: fps } })); } catch (e) {}
     }
   }
 

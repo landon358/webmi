@@ -11,8 +11,25 @@
      A displacement filter warps the live starfield behind each tile;
      the displacement strength breathes slowly, so the glass reads as
      liquid rather than frost. Fallback stays plain blur. */
+  /* Set once the FPS governor reports trouble. The displacement filter runs as a
+     backdrop-filter over the live starfield canvas, so the browser re-filters the
+     whole backdrop behind every tile on every frame — by far the most expensive
+     thing on the page. On a struggling device it goes first, and stays off:
+     liquidize() polls for ~9s, so this has to be sticky, not just a class swap. */
+  var lqOff = false;
+  window.addEventListener('wm:perf', function () {
+    if (lqOff) return;
+    lqOff = true;
+    document.querySelectorAll('.js-glass').forEach(function (el) {
+      el.style.backdropFilter = 'blur(8px) saturate(1.65)';
+      el.style.webkitBackdropFilter = 'blur(8px) saturate(1.65)';
+    });
+    var def = document.getElementById('wm-liquid-def');
+    if (def && def.parentNode) def.parentNode.removeChild(def);
+  });
+
   function liquidize() {
-    if (!document.body) return;
+    if (!document.body || lqOff) return;
     if (!document.getElementById('wm-liquid-def')) {
       var w = document.createElement('div');
       w.innerHTML = '<svg id="wm-liquid-def" width="0" height="0" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">'

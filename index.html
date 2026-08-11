@@ -233,7 +233,12 @@
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="anonymous">
 <link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=satoshi@400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
 <style>
-body { margin: 0; background: #0b0b0d; }
+/* Background lives on <html>, not <body>: the component runtime gives body a
+   fixed viewport height with its own overflow, so a body background paints only
+   one screen tall and clips the fixed starfield, cutting a hard line across the
+   page at the body box edge. On <html> it always fills the viewport canvas. */
+html { background: #0b0b0d; }
+body { margin: 0; }
 a { color: #c9ccd2; text-decoration: none; }
 a:hover { color: #ffffff; }
 ::selection { background: rgb(74 158 235 / 0.35); }
@@ -247,7 +252,11 @@ a:hover { color: #ffffff; }
 <main style="position: relative; z-index: 2; font-family: Switzer, -apple-system, 'Helvetica Neue', sans-serif; font-weight: 300; color: #f4f4f5;">
 
   <section data-screen-label="Hero" style="min-height: 100dvh; display: flex; flex-direction: column; justify-content: flex-end; padding: 96px 6vw 64px; box-sizing: border-box; position: relative;">
-    <div aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: 78%; height: 70%; background: radial-gradient(120% 90% at 22% 78%, rgb(6 8 14 / 0.72), rgb(6 8 14 / 0.28) 45%, transparent 78%); pointer-events: none;"></div>
+    <!-- Readability scrim behind the headline. It has to overhang the hero: the
+         gradient is still ~48% opaque at the hero's own bottom edge, so clipping
+         it there cut a hard horizontal line across the starfield. The box now
+         runs past the fold and the gradient reaches full transparency inside it. -->
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 13%; width: 78%; height: 120%; z-index: -1; background: radial-gradient(100% 60% at 22% 60%, rgb(6 8 14 / 0.75), rgb(6 8 14 / 0.30) 30%, transparent 58%); pointer-events: none;"></div>
     <div style="position: relative; max-width: 1380px; width: 100%; margin: 0 auto; padding-right: clamp(0px, calc((100vw - 980px) * 0.5), 220px); box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 40px;">
       <h1 style="margin: 0; font-family: Gambarino, 'Iowan Old Style', Georgia, serif; font-weight: 400; font-size: clamp(38px, 8.4vw, 132px); line-height: 1.02; letter-spacing: -0.01em; text-wrap: balance; max-width: 12ch;">
         <span class="js-enter" style="display: block;">Web design in</span>

@@ -13,7 +13,12 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin="anonymous">
 <link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
 <style>
-body { margin: 0; background: #0b0b0d; }
+/* Background lives on <html>, not <body>: the component runtime gives body a
+   fixed viewport height with its own overflow, so a body background paints only
+   one screen tall and clips the fixed starfield, cutting a hard line across the
+   page at the body box edge. On <html> it always fills the viewport canvas. */
+html { background: #0b0b0d; }
+body { margin: 0; }
 a { color: #c9ccd2; text-decoration: none; }
 a:hover { color: #ffffff; }
 ::selection { background: rgb(74 158 235 / 0.35); }

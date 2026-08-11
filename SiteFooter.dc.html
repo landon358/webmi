@@ -15,7 +15,12 @@
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin="anonymous">
 <link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
 <style>
-body { margin: 0; background: #0b0b0d; }
+/* Background lives on <html>, not <body>: the component runtime gives body a
+   fixed viewport height with its own overflow, so a body background paints only
+   one screen tall and clips the fixed starfield, cutting a hard line across the
+   page at the body box edge. On <html> it always fills the viewport canvas. */
+html { background: #0b0b0d; }
+body { margin: 0; }
 a { color: #c9ccd2; text-decoration: none; }
 a:hover { color: #ffffff; }
 </style>
@@ -54,7 +59,15 @@ a:hover { color: #ffffff; }
     </div>
     <div style="max-width: 1200px; margin: 44px auto 0; padding-top: 22px; border-top: 1px solid rgb(255 255 255 / 0.07); display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 22px;">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Areas served</span>
+      <!-- Every town WebMI serves is listed. Only the towns with a published page
+           are links; the rest are plain text until their page ships. -->
       <a href="/web-design-boyne-city" style="font-size: 14px;">Boyne City</a>
+      <span style="font-size: 14px; color: #7d8087;">Charlevoix</span>
+      <span style="font-size: 14px; color: #7d8087;">Petoskey</span>
+      <span style="font-size: 14px; color: #7d8087;">Harbor Springs</span>
+      <span style="font-size: 14px; color: #7d8087;">East Jordan</span>
+      <span style="font-size: 14px; color: #7d8087;">Boyne Falls</span>
+      <span style="font-size: 14px; color: #7d8087;">Walloon Lake</span>
     </div>
   </sc-if>
   <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
@@ -75,7 +88,12 @@ a:hover { color: #ffffff; }
           <div style="overflow: hidden;">
             <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 4px 0 22px; font-size: 15px;">
               <sc-for list="{{ sec.links }}" as="lnk" hint-placeholder-count="4">
-                <a href="{{ lnk.href }}" style="padding: 2px 0;">{{ lnk.label }}</a>
+                <sc-if value="{{ lnk.isLink }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ lnk.href }}" style="padding: 2px 0;">{{ lnk.label }}</a>
+                </sc-if>
+                <sc-if value="{{ lnk.plain }}" hint-placeholder-val="{{ false }}">
+                  <span style="padding: 2px 0; color: #7d8087;">{{ lnk.label }}</span>
+                </sc-if>
               </sc-for>
             </div>
           </div>
@@ -111,8 +129,10 @@ class Component extends DCLogic {
       ['Contact', [
         ['mailto:landon@webmi.org', 'landon@webmi.org'], ['tel:7344760843', '(734) 476-0843'], ['/contact', 'Get in touch'],
       ]],
+      // A null href lists the town as plain text: it is served, but has no page yet.
       ['Areas served', [
-        ['/web-design-boyne-city', 'Boyne City'],
+        ['/web-design-boyne-city', 'Boyne City'], [null, 'Charlevoix'], [null, 'Petoskey'],
+        [null, 'Harbor Springs'], [null, 'East Jordan'], [null, 'Boyne Falls'], [null, 'Walloon Lake'],
       ]],
     ];
     const open = this.state.open;
@@ -121,7 +141,7 @@ class Component extends DCLogic {
       wide: !this.state.narrow,
       sections: defs.map(([label, links], i) => ({
         label,
-        links: links.map(([href, label2]) => ({ href, label: label2 })),
+        links: links.map(([href, label2]) => ({ href: href || '', label: label2, isLink: !!href, plain: !href })),
         openAttr: open[i] ? 'true' : 'false',
         rows: open[i] ? '1fr' : '0fr',
         rot: open[i] ? '45deg' : '0deg',
