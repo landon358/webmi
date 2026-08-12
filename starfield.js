@@ -46,6 +46,10 @@
   var sky = null, stars = [], bright = [], hazes = [], shots = [];
   var nextShot = 4, tPrev = 0, running = true, rafId = 0, scrollCur = 0;
   var DENS = window.WM_STAR_DENSITY || 3, mw = null, mwL = 0, mwW = 0; // DENS: star density multiplier
+  // Overall star brightness. Set window.WM_STAR_BRIGHTNESS before this script
+  // loads to dial the field up or down without touching the distributions;
+  // 1 is the tuned default, 1.3 is noticeably punchier, 0.8 is subtle.
+  var BRIGHT = window.WM_STAR_BRIGHTNESS || 1;
   var tier = 0, baseDens = DENS, gvN = 0, gvT = 0, gvWait = 1; // FPS governor: steps quality down on weak devices
   var panOX = 0, panOY = 0, panVX = 0, panVY = 0, panTX = 0, panTY = 0; // camera pan (page-travel transitions)
   var galImgs = [], galImgsC = [], galaxies = [], colorStars = [], tint = null, colEls = null, cf = 0, colWait = 0;
@@ -111,8 +115,15 @@
       var depth = rand(0.15, 1);
       var s = {
         x: srandom() * dw, y: srandom() * dh,
-        r: (big ? rand(1.1, 1.9) : (srandom() < 0.82 ? rand(0.3, 0.9) : rand(0.9, 1.4))) * DPR,
-        base: big ? rand(0.65, 1) : 0.18 + 0.72 * srandom() * srandom(),
+        // The faintest stars used to bottom out at 0.3 device px. Sub-pixel
+        // fillRects get antialiased down to almost nothing, so they read as dim
+        // rather than small. The floor is lifted just enough for them to resolve.
+        r: (big ? rand(1.1, 1.9) : (srandom() < 0.82 ? rand(0.45, 0.95) : rand(0.95, 1.4))) * DPR,
+        // srandom()*srandom() is heavily low-skewed (median ~0.19), which put most
+        // small stars near the 0.18 floor and left the field barely visible.
+        // pow(u, 1.5) is a gentler skew and the floor is raised, so the dimmest
+        // stars roughly double while the bright end stays where it was.
+        base: (big ? rand(0.65, 1) : 0.34 + 0.6 * Math.pow(srandom(), 1.5)) * BRIGHT,
         sp: rand(0.6, 2.6), ph: rand(0, 6.28),
         sp2: rand(3, 7), ph2: rand(0, 6.28),
         scin: srandom() < 0.3,
@@ -127,8 +138,8 @@
     for (i = 0; i < cn; i++) {
       colorStars.push({
         x: srandom() * dw, y: srandom() * dh,
-        r: rand(0.35, 1.7) * DPR,
-        base: 0.2 + 0.75 * srandom() * srandom(),
+        r: rand(0.5, 1.7) * DPR,
+        base: (0.34 + 0.62 * Math.pow(srandom(), 1.5)) * BRIGHT,
         sp: rand(0.6, 2.6), ph: rand(0, 6.28),
         par: 0.06 + Math.pow(rand(0.15, 1), 2) * 0.62,
         col: CPAL[(srandom() * CPAL.length) | 0]
@@ -353,8 +364,11 @@
       var xx = (s.x - panOX * s.par) % dw; if (xx < 0) xx += dw;
       yy = (s.y - (sc + panOY) * s.par) % dh; if (yy < 0) yy += dh;
       k = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph);
-      a = s.base * (0.62 + 0.38 * k);
-      if (s.scin) a *= 0.7 + 0.3 * Math.sin(t * s.sp2 + s.ph2);
+      // Shallower twinkle trough: the dip used to take small stars down to 62% of
+      // their base, which on top of an already-low base made them vanish.
+      a = s.base * (0.72 + 0.28 * k);
+      if (s.scin) a *= 0.78 + 0.22 * Math.sin(t * s.sp2 + s.ph2);
+      if (a > 1) a = 1;
       if (intro) {
         var sdx = xx - dw * 0.18, sdy = yy - dh * 0.22;
         var srr = Math.hypot(sdx, sdy), saa = Math.atan2(sdy, sdx) + ang;
@@ -375,6 +389,7 @@
       k = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph);
       a = s.base * (0.66 + 0.34 * k);
       if (s.scin) a *= 0.75 + 0.25 * Math.sin(t * s.sp2 + s.ph2);
+      if (a > 1) a = 1; // a WM_STAR_BRIGHTNESS above 1 must not push globalAlpha out of range
       var r = s.r * (0.96 + 0.08 * k);
       if (intro) {
         var bdx = xx - dw * 0.18, bdy = yy - dh * 0.22;
@@ -398,7 +413,7 @@
         var cx = (s.x - panOX * s.par) % dw; if (cx < 0) cx += dw;
         yy = (s.y - (sc + panOY) * s.par) % dh; if (yy < 0) yy += dh;
         k = 0.5 + 0.5 * Math.sin(t * s.sp + s.ph);
-        ctx.globalAlpha = s.base * (0.6 + 0.4 * k) * Math.min(1, cf * 1.25);
+        ctx.globalAlpha = Math.min(1, s.base * (0.6 + 0.4 * k) * Math.min(1, cf * 1.25));
         ctx.fillStyle = 'rgb(' + s.col + ')';
         ctx.fillRect(cx - s.r * 0.5, yy - s.r * 0.5, s.r, s.r);
       }
