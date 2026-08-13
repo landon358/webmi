@@ -138,18 +138,13 @@
     Home: [0, 0], Services: [-1, 0], WebDesign: [-2, -0.6], MonthlyCare: [-2, 0.6],
     Support: [-2, 0.6], LocalSEO: [-2, 1], FreeDemo: [-1.4, 0.9], About: [0, 1],
     FAQ: [1, 1], Contact: [1, 0], Pricing: [-1, 0], OurWork: [0.6, -1],
-    TownBoyneCity: [-2.7, -1.1], TownCharlevoix: [-3, -0.7], TownPetoskey: [-2.7, -0.3],
-    TownHarborSprings: [-3, 0.1], TownEastJordan: [-2.7, 0.5], TownBoyneFalls: [-3, 0.9],
-    TownWalloonLake: [-2.7, 1.3]
+    Michigan: [-2.7, -1.1]
   };
   var SLUG = {
     '': 'Home', 'index': 'Home', 'services': 'Services', 'web-design': 'WebDesign',
     'local-seo': 'LocalSEO', 'free-demo': 'FreeDemo', 'our-work': 'OurWork',
     'about': 'About', 'faq': 'FAQ', 'contact': 'Contact',
-    'web-design-boyne-city': 'TownBoyneCity', 'web-design-charlevoix': 'TownCharlevoix',
-    'web-design-petoskey': 'TownPetoskey', 'web-design-harbor-springs': 'TownHarborSprings',
-    'web-design-east-jordan': 'TownEastJordan', 'web-design-boyne-falls': 'TownBoyneFalls',
-    'web-design-walloon-lake': 'TownWalloonLake'
+    'michigan': 'Michigan'
   };
   function keyOf(p) {
     if (!p) return null;

@@ -4,7 +4,11 @@ Allow: /
 # Shared component fragments — not pages
 Disallow: /SiteNav.dc.html
 Disallow: /SiteFooter.dc.html
-Disallow: /TownPage.dc.html
 Disallow: /OrientNav.dc.html
+
+# Internal handoff notes — published by `publish = "."` but not content
+Disallow: /README.md
+Disallow: /PIVOT-NOTES.md
+Disallow: /SEO-HANDOFF.md
 
 Sitemap: https://webmi.org/sitemap.xml

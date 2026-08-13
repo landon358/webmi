@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://webmi.org/assets/og/default.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="WebMichigan — web design for Northern Michigan small businesses">
+<meta property="og:image:alt" content="WebMichigan — web design for Michigan small businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Our Work | Website Examples | WebMichigan">
 <meta name="twitter:description" content="Six live client sites built by WebMichigan, from a Charlevoix gym to a Birmingham contractor. Open any one of them and click through the real thing.">
@@ -127,7 +127,7 @@
        "@type": "WebSite",
        "name": "Ryan's Landscaping",
        "url": "https://landon358.github.io/ryanslandscaping/index.html",
-       "description": "Landscaping, lawn care and snow removal in Boyne City.",
+       "description": "Landscaping, lawn care and snow removal in Michigan.",
        "image": "https://webmi.org/assets/work/ryanslandscaping.webp",
        "creator": {
         "@id": "https://webmi.org/#business"
@@ -166,7 +166,7 @@
    "url": "https://webmi.org",
    "email": "landon@webmi.org",
    "telephone": "+1-734-476-0843",
-   "description": "Custom web design, hosting, local SEO and support for small businesses in Boyne City and Northern Michigan, in one monthly rate with no upfront fee. See a free working demo of your website first.",
+   "description": "Custom web design, hosting, local SEO and support for small businesses across Michigan, in one monthly rate with no upfront fee. See a free working demo of your website first.",
    "image": "https://webmi.org/assets/og/default.jpg",
    "founder": {
     "@type": "Person",
@@ -178,41 +178,16 @@
     "addressRegion": "MI",
     "addressCountry": "US"
    },
-   "areaServed": [
-    {
-     "@type": "City",
-     "name": "Boyne City"
-    },
-    {
-     "@type": "City",
-     "name": "Charlevoix"
-    },
-    {
-     "@type": "City",
-     "name": "Petoskey"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Charlevoix County"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Emmet County"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Antrim County"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Otsego County"
-    },
-    {
-     "@type": "Place",
-     "name": "Northern Michigan"
+      "areaServed": {
+    "@type": "State",
+    "name": "Michigan",
+    "alternateName": "MI",
+    "containedInPlace": {
+     "@type": "Country",
+     "name": "US"
     }
-   ],
-   "priceRange": "$199-$599",
+   },
+   "priceRange": "$199-$499",
    "makesOffer": [
     {
      "@type": "Offer",
@@ -234,7 +209,7 @@
      "description": "Everything in Essentials plus ecommerce platforms, expanded bandwidth and priority support.",
      "priceSpecification": {
       "@type": "UnitPriceSpecification",
-      "price": "599",
+      "price": "499",
       "priceCurrency": "USD",
       "unitText": "per month",
       "billingIncrement": 1
@@ -255,13 +230,19 @@
  ]
 }
 </script>
+<!-- CLAUDE-CODE (statewide pivot, Aug 2026):
+     1. The ProfessionalService/#business JSON-LD graph is duplicated verbatim on every page.
+        Extract to one shared partial so NAP, priceRange and areaServed live in one place.
+     2. Verify every JSON-LD block parses (Rich Results Test) after the areaServed rewrite
+        from a City/County array to a single State of Michigan node.
+     3. addressLocality is intentionally still "Boyne City" to match the Google Business
+        Profile. It must stay out of all visible copy. Do not surface it in the DOM.
+     4. Confirm no remaining internal link points at a retired /web-design-<town> URL. -->
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin="anonymous">
 <link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
 <style>
@@ -286,7 +267,7 @@ a:hover { color: #ffffff; }
   <header data-screen-label="Opener" style="padding: clamp(150px, 20vh, 240px) 6vw 0;">
     <div style="max-width: 1280px; margin: 0 auto;">
       <h1 class="js-enter" style="margin: 0; font-family: Gambarino, 'Iowan Old Style', Georgia, serif; font-weight: 400; font-size: clamp(34px, 6vw, 96px); line-height: 1.02; letter-spacing: -0.01em;">Our work</h1>
-      <p class="js-enter" style="margin: 30px 0 0; font-size: 19px; line-height: 1.6; color: #c9ccd2; max-width: 52ch; text-shadow: 0 2px 16px rgb(4 6 10 / 0.85); text-wrap: pretty;">Sites built for businesses around Northern Michigan. Open any one of them and click through the real thing.</p>
+      <p class="js-enter" style="margin: 30px 0 0; font-size: 19px; line-height: 1.6; color: #c9ccd2; max-width: 52ch; text-shadow: 0 2px 16px rgb(4 6 10 / 0.85); text-wrap: pretty;">Sites built for businesses across Michigan. Open any one of them and click through the real thing.</p>
     </div>
   </header>
 
@@ -343,7 +324,7 @@ a:hover { color: #ffffff; }
           <img src="assets/work/ladolcevita.webp" alt="La Dolcé Vita Salon website homepage" width="2856" height="1626" loading="lazy" decoding="async" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1), filter 500ms ease;" style-hover="transform: scale(1.06); filter: saturate(1.12) brightness(1.06);">
         </div></a>
         <figcaption style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 26px 2px 0;">
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Petoskey</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Petoskey</span><!-- CLAUDE-CODE: real client location, kept as portfolio fact. Swap to "Michigan" if the statewide pivot should scrub every northern town name. -->
           <h2 style="margin: 0; font-family: Switzer, -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: clamp(21px, 2vw, 27px); line-height: 1.2; letter-spacing: -0.01em;">La Dolcé Vita Salon</h2>
           <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #9a9da3; max-width: 46ch; text-wrap: pretty;">A quiet, editorial site for a fine-hair salon, where the booking flow feels as unhurried as the studio itself.</p>
           <a href="https://landon358.github.io/ladolcevita-v1/index.html" target="_blank" rel="noopener" data-magnet="" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.3); color: #f4f4f5; font-size: 14px; letter-spacing: 0.03em; white-space: nowrap; transition: background 250ms ease, border-color 250ms ease, color 250ms ease;" style-hover="background: rgb(74 158 235 / 0.14); border-color: #4a9eeb; color: #ffffff;">
@@ -358,7 +339,7 @@ a:hover { color: #ffffff; }
           <img src="assets/work/ryanslandscaping.webp" alt="Ryan's Landscaping website homepage" width="2850" height="1624" loading="lazy" decoding="async" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1), filter 500ms ease;" style-hover="transform: scale(1.06); filter: saturate(1.12) brightness(1.06);">
         </div></a>
         <figcaption style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 26px 2px 0;">
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Boyne City</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Michigan</span>
           <h2 style="margin: 0; font-family: Switzer, -apple-system, 'Helvetica Neue', sans-serif; font-weight: 500; font-size: clamp(21px, 2vw, 27px); line-height: 1.2; letter-spacing: -0.01em;">Ryan's Landscaping</h2>
           <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #9a9da3; max-width: 46ch; text-wrap: pretty;">Twenty-six years of landscaping, lawn care and snow removal, with a portfolio and estimate request built for a 20-person crew.</p>
           <a href="https://landon358.github.io/ryanslandscaping/index.html" target="_blank" rel="noopener" data-magnet="" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.3); color: #f4f4f5; font-size: 14px; letter-spacing: 0.03em; white-space: nowrap; transition: background 250ms ease, border-color 250ms ease, color 250ms ease;" style-hover="background: rgb(74 158 235 / 0.14); border-color: #4a9eeb; color: #ffffff;">

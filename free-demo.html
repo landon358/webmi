@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://webmi.org/assets/og/default.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="WebMichigan — web design for Northern Michigan small businesses">
+<meta property="og:image:alt" content="WebMichigan — web design for Michigan small businesses">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Free Website Demo | See It Before You Pay | WebMI">
 <meta name="twitter:description" content="A free working demo of your website you can click through on your phone before you commit to anything. No upfront fee, plans from $199 a month.">
@@ -52,7 +52,7 @@
    "url": "https://webmi.org",
    "email": "landon@webmi.org",
    "telephone": "+1-734-476-0843",
-   "description": "Custom web design, hosting, local SEO and support for small businesses in Boyne City and Northern Michigan, in one monthly rate with no upfront fee. See a free working demo of your website first.",
+   "description": "Custom web design, hosting, local SEO and support for small businesses across Michigan, in one monthly rate with no upfront fee. See a free working demo of your website first.",
    "image": "https://webmi.org/assets/og/default.jpg",
    "founder": {
     "@type": "Person",
@@ -64,41 +64,16 @@
     "addressRegion": "MI",
     "addressCountry": "US"
    },
-   "areaServed": [
-    {
-     "@type": "City",
-     "name": "Boyne City"
-    },
-    {
-     "@type": "City",
-     "name": "Charlevoix"
-    },
-    {
-     "@type": "City",
-     "name": "Petoskey"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Charlevoix County"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Emmet County"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Antrim County"
-    },
-    {
-     "@type": "AdministrativeArea",
-     "name": "Otsego County"
-    },
-    {
-     "@type": "Place",
-     "name": "Northern Michigan"
+      "areaServed": {
+    "@type": "State",
+    "name": "Michigan",
+    "alternateName": "MI",
+    "containedInPlace": {
+     "@type": "Country",
+     "name": "US"
     }
-   ],
-   "priceRange": "$199-$599",
+   },
+   "priceRange": "$199-$499",
    "makesOffer": [
     {
      "@type": "Offer",
@@ -120,7 +95,7 @@
      "description": "Everything in Essentials plus ecommerce platforms, expanded bandwidth and priority support.",
      "priceSpecification": {
       "@type": "UnitPriceSpecification",
-      "price": "599",
+      "price": "499",
       "priceCurrency": "USD",
       "unitText": "per month",
       "billingIncrement": 1
@@ -141,13 +116,19 @@
  ]
 }
 </script>
+<!-- CLAUDE-CODE (statewide pivot, Aug 2026):
+     1. The ProfessionalService/#business JSON-LD graph is duplicated verbatim on every page.
+        Extract to one shared partial so NAP, priceRange and areaServed live in one place.
+     2. Verify every JSON-LD block parses (Rich Results Test) after the areaServed rewrite
+        from a City/County array to a single State of Michigan node.
+     3. addressLocality is intentionally still "Boyne City" to match the Google Business
+        Profile. It must stay out of all visible copy. Do not surface it in the DOM.
+     4. Confirm no remaining internal link points at a retired /web-design-<town> URL. -->
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin="anonymous">
 <link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&amp;f[]=switzer@300,400,500&amp;f[]=jet-brains-mono@400&amp;display=swap" rel="stylesheet">
 <style>

@@ -15,17 +15,23 @@
 /about.html               /about         301
 /faq.html                 /faq           301
 /contact.html             /contact       301
-/web-design-boyne-city.html  /web-design-boyne-city  301
 
-# --- town pages not yet written ---
-# These six ship once their local copy exists. Until then send the traffic
-# to the main service page rather than serving a 404.
-/web-design-charlevoix     /web-design    302
-/web-design-petoskey       /web-design    302
-/web-design-harbor-springs /web-design    302
-/web-design-east-jordan    /web-design    302
-/web-design-boyne-falls    /web-design    302
-/web-design-walloon-lake   /web-design    302
+# --- retired town pages -> one statewide coverage page (Aug 2026 pivot) ---
+/web-design-boyne-city      /michigan   301
+/web-design-charlevoix      /michigan   301
+/web-design-petoskey        /michigan   301
+/web-design-harbor-springs  /michigan   301
+/web-design-east-jordan     /michigan   301
+/web-design-boyne-falls     /michigan   301
+/web-design-walloon-lake    /michigan   301
+/web-design-boyne-city.html      /michigan   301
+/web-design-charlevoix.html      /michigan   301
+/web-design-petoskey.html        /michigan   301
+/web-design-harbor-springs.html  /michigan   301
+/web-design-east-jordan.html     /michigan   301
+/web-design-boyne-falls.html     /michigan   301
+/web-design-walloon-lake.html    /michigan   301
+/michigan.html            /michigan      301
 
 # --- legacy Squarespace system paths ---
 /config/*                 /              301
@@ -35,6 +41,10 @@
 /portfolio                /our-work      301
 /work                     /our-work      301
 /pricing                  /services      301
+
+# CLAUDE-CODE: after the statewide pivot, pull the full list of indexed URLs from
+# Search Console (Pages > Indexed) and add a 301 for anything not covered above.
+# Every retired /web-design-<town> URL must resolve, not 404, or the link equity is lost.
 
 # TODO before launch: open Squarespace > Pages and Search Console > Pages,
 # and add a 301 line here for every old URL not already listed above.
