@@ -32,6 +32,11 @@
 /web-design-boyne-falls.html     /michigan   301
 /web-design-walloon-lake.html    /michigan   301
 /michigan.html            /michigan      301
+/privacy.html             /privacy       301
+/terms.html               /terms         301
+/privacy-policy           /privacy       301
+/terms-of-service         /terms         301
+/terms-and-conditions     /terms         301
 
 # --- legacy Squarespace system paths ---
 /config/*                 /              301

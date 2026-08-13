@@ -138,13 +138,13 @@
     Home: [0, 0], Services: [-1, 0], WebDesign: [-2, -0.6], MonthlyCare: [-2, 0.6],
     Support: [-2, 0.6], LocalSEO: [-2, 1], FreeDemo: [-1.4, 0.9], About: [0, 1],
     FAQ: [1, 1], Contact: [1, 0], Pricing: [-1, 0], OurWork: [0.6, -1],
-    Michigan: [-2.7, -1.1]
+    Michigan: [-2.7, -1.1], Privacy: [2.4, 1.6], Terms: [2.8, 1.9]
   };
   var SLUG = {
     '': 'Home', 'index': 'Home', 'services': 'Services', 'web-design': 'WebDesign',
     'local-seo': 'LocalSEO', 'free-demo': 'FreeDemo', 'our-work': 'OurWork',
     'about': 'About', 'faq': 'FAQ', 'contact': 'Contact',
-    'michigan': 'Michigan'
+    'michigan': 'Michigan', 'privacy': 'Privacy', 'terms': 'Terms'
   };
   function keyOf(p) {
     if (!p) return null;

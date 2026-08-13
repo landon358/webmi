@@ -23,6 +23,8 @@ Local preview: any static server from this directory.
     faq.html              FAQ
     contact.html          Contact
     free-demo.html        Free demo request
+    privacy.html          Privacy Policy
+    terms.html            Terms & Conditions
     404.html              Not found
 
     SiteNav.dc.html       Shared nav component
@@ -34,7 +36,7 @@ Local preview: any static server from this directory.
     wm-motion.js          Scroll reveals + page-transition coordinates
 
     _redirects            301 map (legacy Squarespace + retired town pages)
-    sitemap.xml           10 URLs
+    sitemap.xml           12 URLs
     robots.txt
     netlify.toml          Publish dir, cache headers, noindex on .dc.html
 
@@ -51,6 +53,16 @@ without the extension (`/michigan`, not `/michigan.html`); `_redirects` 301s the
 
 Pricing lives in visible copy **and** JSON-LD on several pages. Changing a price means
 updating both. See `PIVOT-NOTES.md`.
+
+## Content ownership notes
+
+Two things are duplicated by design and must be changed in both places:
+
+- **Prices** appear in visible copy *and* in JSON-LD (`priceRange`, every
+  `UnitPriceSpecification`). Current: Essentials $199/mo, Maximum $499/mo.
+- **The `#business` JSON-LD graph** is repeated verbatim on all 12 pages.
+  `addressLocality` is intentionally "Boyne City" to match the Google Business Profile —
+  it is deliberately absent from all visible copy. Do not surface it in the DOM.
 
 ## Open items
 

@@ -41,3 +41,52 @@ Inline `<!-- CLAUDE-CODE ... -->` markers are placed at each site. Summary:
    Services submenu in `SiteNav.dc.html` if it should be primary navigation.
 6. **Open items from before the pivot** (still outstanding): real `sameAs` URLs for
    Google Business, Facebook and LinkedIn; Netlify staging test of 404 + redirect behavior.
+
+---
+
+# Team page + legal pages — Aug 13, 2026
+
+## About page
+
+Restructured from a single-person hero to a team page. H1 is now "The people you'll be
+working with." Two stacked profile rows, portrait beside text: Landon (Design & Development) first,
+then Mark Morris (SEO & Marketing). Stats row and CTA below both, CTA copy is now "Work with us."
+
+- Mark's portrait: `assets/mark-portrait-small.webp` (840x1050, cropped 4:5 from the
+  supplied square headshot, WebP q82, 66 KB). Both portraits render at `aspect-ratio: 4/5; object-fit: cover`.
+- Schema: `AboutPage.mainEntity` is now an array; added a `Person` node `#mark`
+  (jobTitle "SEO & Marketing", knowsAbout SEO / local SEO / GBP / marketing / advertising).
+- Title and description updated to reference the team rather than one person.
+
+## Legal pages (new)
+
+`Privacy.dc.html` -> `/privacy` and `Terms.dc.html` -> `/terms`, written for
+**Web Michigan LLC**, a Michigan limited liability company.
+
+- Privacy: 13 sections — data collected, automatic collection, cookies, use, sharing,
+  data on client sites, retention, security, your choices, children, third-party links,
+  changes, contact.
+- Terms: 15 sections — services, free demo, fees and billing ($199–$499/mo, no upfront fee,
+  billing starts on an agreed date before or after launch), buyouts and ending service, client responsibilities, ownership,
+  SEO results disclaimer, third-party services, uptime, warranty disclaimer and liability
+  cap, indemnification, termination, Michigan governing law, changes, contact.
+- Both linked from the footer bottom bar. Copyright line is now "© 2026 Web Michigan LLC".
+- Added to `sitemap.xml` (priority 0.2) and `_redirects` (`.html` forms plus
+  `/privacy-policy`, `/terms-of-service`, `/terms-and-conditions`).
+- Starfield coordinates added for both pages in `wm-motion.js`.
+
+## ⚠ For Claude Code / counsel
+
+**These documents have not been reviewed by an attorney.** They are a solid working
+baseline drafted from how the business actually operates, but they are not legal advice.
+Inline `<!-- CLAUDE-CODE (legal pages) -->` markers list the specifics:
+
+1. Attorney review before relying on them.
+2. Add the LLC's registered mailing address to the contact blocks if compliance requires it.
+3. Name the actual analytics / payment / cookie providers in privacy section 3 once chosen.
+4. Verify the fee terms match the real signed service agreement, especially the 15-day
+   suspension window, the buyout formula in section 4, and the 3-month liability cap.
+   The buyout is described as "based on lease term and remaining duration" — if there is
+   a fixed formula or multiplier, state it explicitly.
+5. Decide whether `/privacy` and `/terms` should also appear in the main nav, not just
+   the footer.
