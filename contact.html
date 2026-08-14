@@ -168,6 +168,7 @@ input:focus, textarea:focus { outline: 2px solid #7bbaf0; outline-offset: 2px; }
           <div style="display: flex; flex-direction: column; gap: 6px;">
             <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Email</span>
             <a href="mailto:landon@webmi.org" style="font-size: clamp(19px, 2vw, 26px); color: #f4f4f5;" style-hover="color: #4a9eeb;">landon@webmi.org</a>
+            <a href="mailto:mark@webmi.org" style="font-size: clamp(19px, 2vw, 26px); color: #f4f4f5;" style-hover="color: #4a9eeb;">mark@webmi.org</a>
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
             <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #5d6066;">Phone</span>
@@ -179,23 +180,41 @@ input:focus, textarea:focus { outline: 2px solid #7bbaf0; outline-offset: 2px; }
           </div>
         </div>
       </div>
-      <form class="js-enter" onSubmit="{{ send }}" style="display: flex; flex-direction: column; gap: 22px; background: rgb(255 255 255 / 0.055); border: 1px solid rgb(255 255 255 / 0.14); border-radius: 20px; padding: clamp(28px, 3.4vw, 44px); backdrop-filter: blur(14px) saturate(1.55); -webkit-backdrop-filter: blur(14px) saturate(1.55); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.42), inset 0 -1px 0 rgb(255 255 255 / 0.08), 0 30px 80px -34px rgb(8 12 26 / 0.92);">
+      <sc-if value="{{ sent }}">
+        <div role="status" aria-live="polite" style="display: flex; flex-direction: column; gap: 18px; background: rgb(255 255 255 / 0.055); border: 1px solid rgb(255 255 255 / 0.14); border-radius: 20px; padding: clamp(28px, 3.4vw, 44px); backdrop-filter: blur(14px) saturate(1.55); -webkit-backdrop-filter: blur(14px) saturate(1.55); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.42), inset 0 -1px 0 rgb(255 255 255 / 0.08), 0 30px 80px -34px rgb(8 12 26 / 0.92);">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #4a9eeb;">Message sent</span>
+          <h2 style="font-family: Gambarino, 'Iowan Old Style', Georgia, serif; margin: 0; font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.1; letter-spacing: -0.01em;">Thanks &#8212; it&#8217;s in.</h2>
+          <p style="margin: 0; font-size: 16px; line-height: 1.7; color: #c9ccd2; max-width: 44ch; text-wrap: pretty;">I read these myself and reply within one to two business days, usually with a first look at what your demo could be.</p>
+          <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #7d8087;">Need it sooner? Call <a href="tel:7344760843" style="color: #9a9da3;">(734) 476-0843</a>.</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ !sent }}">
+      <form class="js-enter" onSubmit="{{ send }}" noValidate="{{ false }}" style="display: flex; flex-direction: column; gap: 22px; background: rgb(255 255 255 / 0.055); border: 1px solid rgb(255 255 255 / 0.14); border-radius: 20px; padding: clamp(28px, 3.4vw, 44px); backdrop-filter: blur(14px) saturate(1.55); -webkit-backdrop-filter: blur(14px) saturate(1.55); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.42), inset 0 -1px 0 rgb(255 255 255 / 0.08), 0 30px 80px -34px rgb(8 12 26 / 0.92);">
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <label for="wm-name" style="font-size: 14px; color: #d8dae0;">Your name</label>
-          <input id="wm-name" value="{{ name }}" onChange="{{ setName }}" type="text" autoComplete="name" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5;">
+          <input id="wm-name" name="name" value="{{ name }}" onChange="{{ setName }}" type="text" autoComplete="name" required="{{ true }}" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5;">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <label for="wm-email" style="font-size: 14px; color: #d8dae0;">Your email</label>
+          <input id="wm-email" name="email" value="{{ email }}" onChange="{{ setEmail }}" type="email" autoComplete="email" required="{{ true }}" placeholder="so I can send the demo back to you" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5;">
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <label for="wm-biz" style="font-size: 14px; color: #d8dae0;">Business name and town</label>
-          <input id="wm-biz" value="{{ biz }}" onChange="{{ setBiz }}" type="text" placeholder="e.g. a roofing company in Grand Rapids" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5;">
+          <input id="wm-biz" name="business" value="{{ biz }}" onChange="{{ setBiz }}" type="text" placeholder="e.g. a roofing company in Grand Rapids" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5;">
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <label for="wm-msg" style="font-size: 14px; color: #d8dae0;">What do you do?</label>
-          <textarea id="wm-msg" value="{{ msg }}" onChange="{{ setMsg }}" rows="4" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5; resize: vertical;"></textarea>
+          <textarea id="wm-msg" name="message" value="{{ msg }}" onChange="{{ setMsg }}" rows="4" required="{{ true }}" style="background: rgb(11 11 13 / 0.6); border: 1px solid rgb(255 255 255 / 0.2); border-radius: 8px; padding: 13px 16px; font-size: 16px; color: #f4f4f5; resize: vertical;"></textarea>
           <span style="font-size: 13px; color: #7d8087;">A sentence or two is plenty. The demo starts from this.</span>
         </div>
-        <button type="submit" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 15px 36px; border-radius: 999px; background: #4a9eeb; color: #06070a; font-weight: 500; font-size: 16px; border: none; cursor: pointer; white-space: nowrap; font-family: inherit; box-shadow: 0 0 40px 4px rgb(74 158 235 / 0.28); transition: transform 180ms cubic-bezier(0.22,1,0.36,1);" style-hover="transform: translateY(-1px);" style-active="transform: scale(0.98);">Request a free demo</button>
-        <span style="font-size: 12px; color: #5d6066; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em;">Opens your email app with the message ready to send.</span>
+        <input name="_gotcha" value="{{ gotcha }}" onChange="{{ setGotcha }}" type="text" tabIndex="{{ -1 }}" autoComplete="off" aria-hidden="{{ true }}" style="display: none;">
+        <sc-if value="{{ failed }}">
+          <div role="alert" style="font-size: 14px; line-height: 1.6; color: #ffb4a8; background: rgb(255 90 70 / 0.09); border: 1px solid rgb(255 120 100 / 0.32); border-radius: 10px; padding: 12px 16px;">{{ error }}</div>
+        </sc-if>
+        <button type="submit" disabled="{{ sending }}" style="{{ btnStyle }}" style-hover="transform: translateY(-1px);" style-active="transform: scale(0.98);">{{ btnLabel }}</button>
+        <span style="font-size: 12px; color: #5d6066; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.06em;">No upfront fee. I reply within one to two business days.</span>
       </form>
+      </sc-if>
     </div>
   </section>
 
@@ -203,19 +222,64 @@ input:focus, textarea:focus { outline: 2px solid #7bbaf0; outline-offset: 2px; }
 <dc-import name="SiteFooter" hint-size="100%,520px"></dc-import>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+/* The form posts to Formspree over fetch rather than a plain form action, so a
+   submit never navigates away from the starfield. The panel is rendered by this
+   runtime (React underneath), so success and error live in component state —
+   anything that wrote into the DOM directly would be dropped on the next render. */
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xoealjar';
+const BTN_BASE = "align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 15px 36px; border-radius: 999px; background: #4a9eeb; color: #06070a; font-weight: 500; font-size: 16px; border: none; white-space: nowrap; font-family: inherit; box-shadow: 0 0 40px 4px rgb(74 158 235 / 0.28); transition: transform 180ms cubic-bezier(0.22,1,0.36,1), opacity 180ms ease;";
+
 class Component extends DCLogic {
-  state = { name: '', biz: '', msg: '' };
+  state = { name: '', email: '', biz: '', msg: '', gotcha: '', status: 'idle', error: '' };
   renderVals() {
+    const status = this.state.status;
     return {
-      name: this.state.name, biz: this.state.biz, msg: this.state.msg,
+      name: this.state.name, email: this.state.email, biz: this.state.biz,
+      msg: this.state.msg, gotcha: this.state.gotcha, error: this.state.error,
+      sending: status === 'sending',
+      sent: status === 'sent',
+      failed: status === 'error',
+      btnLabel: status === 'sending' ? 'Sending…' : 'Request a free demo',
+      btnStyle: BTN_BASE + (status === 'sending' ? ' opacity: 0.6; cursor: default;' : ' cursor: pointer;'),
       setName: e => this.setState({ name: e.target.value }),
+      setEmail: e => this.setState({ email: e.target.value }),
       setBiz: e => this.setState({ biz: e.target.value }),
       setMsg: e => this.setState({ msg: e.target.value }),
+      setGotcha: e => this.setState({ gotcha: e.target.value }),
       send: e => {
         e.preventDefault();
-        const { name, biz, msg } = this.state;
-        const body = encodeURIComponent(`Hi Landon,\n\nI'd like a free demo.\n\nName: ${name}\nBusiness: ${biz}\nWhat we do: ${msg}\n`);
-        window.location.href = `mailto:landon@webmi.org?subject=${encodeURIComponent('Free demo request')}&body=${body}`;
+        if (this.state.status === 'sending') return;
+        const { name, email, biz, msg, gotcha } = this.state;
+        this.setState({ status: 'sending', error: '' });
+        fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            business: biz,
+            message: msg,
+            _gotcha: gotcha,
+            _subject: 'Free demo request — ' + (biz || name || 'webmi.org'),
+          }),
+        }).then(res => {
+          if (res.ok) return this.setState({ status: 'sent' });
+          // Formspree reports validation and plan errors as { errors: [{ message }] }.
+          return res.json().catch(() => null).then(data => {
+            const list = data && Array.isArray(data.errors) ? data.errors : null;
+            this.setState({
+              status: 'error',
+              error: list && list.length
+                ? list.map(x => x.message).join(' ')
+                : 'That did not go through. Please email landon@webmi.org or call (734) 476-0843.',
+            });
+          });
+        }).catch(() => {
+          this.setState({
+            status: 'error',
+            error: 'That did not go through — check your connection, or email landon@webmi.org.',
+          });
+        });
       },
     };
   }
