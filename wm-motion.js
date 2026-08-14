@@ -27,7 +27,16 @@
   /* Weak devices still need an escape hatch from plain blur, which is not free
      over an animated canvas either. starfield.js broadcasts wm:perf as its
      governor steps down; tier 2 means blur is still too costly, so drop the
-     backdrop-filter entirely and fall back to an opaque panel. */
+     backdrop-filter entirely.
+
+     The fallback panel is a dark translucent #0b0b0d rather than the opaque
+     rgb(18 20 28 / 0.92) it used to be. That old value was both lighter and
+     bluer than anything else on the page, so a downgrade read as the tiles
+     changing colour. At 0.72 the starfield still shows through — unblurred,
+     but present — which is far closer to the glass it is standing in for.
+     The blur stays off: re-reading and blurring the backdrop is the actual
+     cost being escaped here, so keeping even a small radius would defeat the
+     tier entirely. */
   var glassTier = 0;
   window.addEventListener('wm:perf', function (e) {
     var tier = (e && e.detail && e.detail.tier) || 0;
@@ -37,7 +46,7 @@
       if (tier >= 2) {
         el.style.backdropFilter = 'none';
         el.style.webkitBackdropFilter = 'none';
-        el.style.background = 'rgb(18 20 28 / 0.92)';
+        el.style.background = 'rgb(11 11 13 / 0.72)';
       } else {
         el.style.backdropFilter = 'blur(4px)';
         el.style.webkitBackdropFilter = 'blur(4px)';

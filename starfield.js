@@ -50,11 +50,20 @@
   // loads to dial the field up or down without touching the distributions;
   // 1 is the tuned default, 1.3 is noticeably punchier, 0.8 is subtle.
   var BRIGHT = window.WM_STAR_BRIGHTNESS || 1;
-  var tier = 0, baseDens = DENS, gvN = 0, gvT = 0, gvWait = 1; // FPS governor: steps quality down on weak devices
+  // FPS governor: steps quality down on weak devices. gvWait is the warm-up
+  // before the first measurement — see govern() for why it has to clear the
+  // page's whole start-up, not just its first second.
+  var tier = 0, baseDens = DENS, gvN = 0, gvT = 0, gvWait = 5;
   var panOX = 0, panOY = 0, panVX = 0, panVY = 0, panTX = 0, panTY = 0; // camera pan (page-travel transitions)
   var galImgs = [], galImgsC = [], galaxies = [], colorStars = [], tint = null, colEls = null, cf = 0, colWait = 0;
-  var isHome = /home[^\/]*$/i.test(location.pathname);
-  var INTRO_D = 5.5, THETA = 1.5, introT = 0, intro = isHome; // star-trail spin-in, home only
+  // Star-trail spin-in, deliberately off. This used to read
+  // /home[^\/]*$/i.test(location.pathname), which only matches the design
+  // tool's /home preview path — in production the home page is served at /,
+  // so the intro has never actually run on the live site. Rather than switch a
+  // 5.5s animation on for every visitor as a side effect of fixing the test,
+  // it stays off by choice. Restore the path test here to bring it back.
+  var isHome = false;
+  var INTRO_D = 5.5, THETA = 1.5, introT = 0, intro = isHome;
   try {
     var __tv = JSON.parse(sessionStorage.getItem('wmTravel') || 'null');
     if (__tv && Date.now() - __tv.ts < 6000) { panVX = __tv.dx * 1100; panVY = __tv.dy * 900; intro = false; }
@@ -466,18 +475,27 @@
     govern(dt);
   }
 
-  // Measure fps in 1s windows; below 45 -> halve density + drop DPR, then cut haze/colour layers.
-  // The warm-up and window used to total ~6s before the first downgrade could land,
-  // which is long enough that a struggling device feels broken before help arrives.
-  // Skipping the first second of frames still avoids judging the page on its own
-  // start-up cost, but relief now comes at ~2s instead of ~6s.
+  // Measure fps in 1s windows; below 30 -> halve density + drop DPR, then cut haze/colour layers.
+  //
+  // The warm-up is 5s, so the first measurement lands after the page has settled.
+  // A 1s warm-up put the measurement window right on top of the worst of start-up:
+  // the component runtime rendering, the two .dc.html fragments arriving over their
+  // own round-trips, webfonts swapping and reflowing, the GSAP entrances, and this
+  // file building its own sky and tint canvases. Any machine dips under 45fps
+  // through that, so capable hardware was being downgraded to the tier 2 opaque
+  // panel within about four seconds of load. The `intro` guard below was meant to
+  // cover exactly this, but it never engaged in production — see isHome above.
+  //
+  // 30fps rather than 45 for the same reason: 45 is a high bar for a full-screen
+  // animated canvas carrying eight blurred backdrops, and tripping it costs more
+  // visually than the frames are worth.
   function govern(dt) {
     if (tier >= 2 || intro || document.hidden) return;
     if (gvWait > 0) { gvWait -= dt; return; }
     gvN++; gvT += dt;
     if (gvT < 1) return;
     var fps = gvN / gvT; gvN = 0; gvT = 0;
-    if (fps < 45) {
+    if (fps < 30) {
       tier++;
       DPR = 1;
       DENS = baseDens * (tier === 1 ? 0.5 : 0.2);
